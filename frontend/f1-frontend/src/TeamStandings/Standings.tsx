@@ -1,26 +1,49 @@
+import { useEffect, useState } from "react";
 import { RacesAPI } from "../api/api";
+import { Team } from "./model/Team";
+import RaceChart from "./RaceChart";
+import './Standings.css';
 
 function Standings(){
-    const api = RacesAPI
-    const data = api.getRaces()
+    const [teamsItem, setTeamsItem] = useState<Team[] | null>(null)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        RacesAPI.getRaces()
+            .then((data: Team[]) => setTeamsItem(data))
+            .catch((e) => setError(e.message));
+    }, [])
+
+    if(error) {
+        return <div>Error: {error}</div>
+    }
+
+    if(!teamsItem) {
+        return <div>Loading ...</div>
+    }
 
     return (
-        <table>
-            <thead>
-                <tr>
-                    <td>Pos</td>
-                    <td>Team</td>
-                    <td>Points</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>1.</td>
-                    <td></td>
-                    <td>192</td>
-                </tr>
-            </tbody>
-        </table>
+        <div className="standings-container">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Pos</td>
+                        <td>Team</td>
+                        <td>Points</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {teamsItem.map((team, index) => (
+                        <tr key={index}>
+                            <td>{index + 1}.</td>
+                            <td>{team.name}</td>
+                            <td>{team.all_points}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+            <RaceChart teams={teamsItem}></RaceChart>
+        </div>
     );
 }
 
