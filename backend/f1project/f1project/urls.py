@@ -20,5 +20,5 @@ from races import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('standings/teams/', views.api_home, name='team-standings')
+    path('standings/teams/', views.get_team_standings, name='team-standings')
 ]

@@ -1,4 +1,9 @@
+import { RacesAPI } from "../api/api";
+
 function Standings(){
+    const api = RacesAPI
+    const data = api.getRaces()
+
     return (
         <table>
             <thead>
@@ -11,7 +16,7 @@ function Standings(){
             <tbody>
                 <tr>
                     <td>1.</td>
-                    <td>Mercedes</td>
+                    <td></td>
                     <td>192</td>
                 </tr>
             </tbody>

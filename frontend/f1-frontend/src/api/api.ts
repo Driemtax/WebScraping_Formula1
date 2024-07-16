@@ -1,7 +1,7 @@
 import { Race } from "../TeamStandings/model/Race";
 import { Team } from "../TeamStandings/model/Team";
 
-const baseURL = 'https://localhost:8000'
+const baseURL = 'http://127.0.0.1:8000'
 
 function translateToErrorMessage(status: number){
     switch (status) {
@@ -35,12 +35,17 @@ function parseJSON(response: Response){
     return response.json();
 }
 
-function convertToTeamModel(data: any) : Team {
-    return new Team(data);
+function convertToRaceModel(data : any) : Race {
+    return new Race(data)
 }
 
-function convertToRaceModel(data: any) : Race {
-    return new Race(data);
+function convertToTeamModel(data: any) : Team {
+    const races = data.races.map((raceData: any) => convertToRaceModel(raceData));
+    return new Team({...data, races});
+}
+
+function convertToTeamList(data: any) : Team[] {
+    return data.map((teamData : any) => convertToTeamModel(teamData))
 }
 
 const RacesAPI = {
@@ -49,10 +54,12 @@ const RacesAPI = {
         return fetch(url)
             .then(checkStatus)
             .then(parseJSON)
-            .then(convertToTeamModel)
+            .then(convertToTeamList)
             .catch((error: TypeError) => {
                 console.log('log client error' + error);
-                throw new Error('An error occurred while retrieving conflicts.')
+                throw new Error('An error occurred while retrieving team standings. ' + error)
             });
     }
 }
+
+export { RacesAPI }
