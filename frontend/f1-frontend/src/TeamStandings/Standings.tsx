@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom'
 import { RacesAPI } from "../api/api";
 import { Team } from "./model/Team";
 import RaceChart from "./RaceChart";
@@ -36,7 +37,7 @@ function Standings(){
                     {teamsItem.map((team, index) => (
                         <tr key={index}>
                             <td>{index + 1}.</td>
-                            <td>{team.name}</td>
+                            <td><Link to={`/${team.name}`}>{team.name}</Link></td>
                             <td>{team.all_points}</td>
                         </tr>
                     ))}
