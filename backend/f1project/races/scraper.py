@@ -2,8 +2,12 @@ from bs4 import BeautifulSoup
 import requests
 from .team import Team
 from .race import Race
+from .cache import team_cache
 
 def getTeamStanding():
+    if 'team_standing' in team_cache:
+        return team_cache['team_standing']
+    
     endpoint = 'https://www.formula1.com/en/results.html/2024/team.html'
     html = requests.get(endpoint)
     soup = BeautifulSoup(html.text, 'lxml')
@@ -17,6 +21,8 @@ def getTeamStanding():
             points = columns[3].text.strip()
             team = Team(name, points)
             teams.append(team)
+    
+    team_cache['team_standing'] = teams
     return teams
 
 def getStanding(team, year):
