@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from .team import Team
 from .race import Race
-from .cache import team_cache
+from .cache import team_cache, team_name_mapping
 
 def getTeamStanding():
     endpoint = 'https://www.formula1.com/en/results.html/2024/team.html'
@@ -23,7 +23,7 @@ def getTeamStanding():
     return teams
 
 def getStanding(team, year):
-    name_format = team.name.lower().replace(" ", "_")
+    name_format = team_name_mapping[team.name][year]
     print(name_format)
     endpoint = f'https://www.formula1.com/en/results.html/{year}/team/{name_format}.html'
     html = requests.get(endpoint)

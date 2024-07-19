@@ -14,5 +14,5 @@ class Team:
         return {
             'name' : self.name,
             'points' : self.points,
-            'races' : {year: [race.to_dict() for race in self.races] for year, races in self.races_by_year.items()}
+            'races_by_year' : {year: [race.to_dict() for race in races] for year, races in self.races_by_year.items()}
         }

@@ -10,7 +10,7 @@ interface RaceChartProps {
 }
 
 const RaceChart: React.FC<RaceChartProps> = ({ teams }) => {
-    const labels = teams[0]?.races.map(race => race.location) || [];
+    const labels = teams[0]?.races_by_year[2024].map(race => race.location) || [];
 
     const teamColors: {[key: string]: string} = {
         'Red Bull Racing Honda RBPT': '#23326A',
@@ -27,7 +27,7 @@ const RaceChart: React.FC<RaceChartProps> = ({ teams }) => {
 
     const datasets = teams.map((team, teamIndex) => {
         let cumulativePoints = 0;
-        const data = team.races.map(race => {
+        const data = team.races_by_year[2024].map(race => {
             cumulativePoints += Number(race.points);
             return cumulativePoints;
         });
