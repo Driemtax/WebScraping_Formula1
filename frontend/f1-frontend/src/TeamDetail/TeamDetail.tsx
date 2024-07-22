@@ -2,30 +2,36 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Team } from "../TeamStandings/model/Team";
 import { useState } from "react";
+import { RacesAPI } from "../api/api";
+import { useTeams } from "../TeamContext";
+import RaceChart from "../TeamStandings/RaceChart";
+
 
 
 function TeamDetail() {
     const { name } = useParams<{name: string }>();
-    const [teamItem, setTeamItem] = useState<Team | null>(null)
-    const [error, SetError] = useState<string | null>(null)
+    const { teams, error } = useTeams();
 
-    useEffect(() => {
-        
-    })
 
 
     if(error){
         return <div className="error">Something went wrong: </div>
     }
 
-    if(!teamItem){
+    const team = teams?.find(team => team.name === name);
+
+    if(!team){
         return (
-            <div className="Error">Welche Jahre möchten Sie vergleichen?: {name}</div>
+            <div className="wrapper">
+                <div className="Error">Kein Team gefunden, wie sind Sie hierhergekommen??</div>
+            </div>
         )
     }
 
     return (
-        <div className=""></div>
+        <div>
+            <h1>{team.name}</h1>
+        </div>
     )
     
 }
