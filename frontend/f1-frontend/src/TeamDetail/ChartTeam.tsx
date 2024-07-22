@@ -10,35 +10,33 @@ interface RaceChartProps {
 }
 
 const RaceChart: React.FC<RaceChartProps> = ({ team }) => {
-    const labels = team?.races_by_year[2024].map(race => race.location) || [];
+    const labels = team?.races_by_year[2023].map((race, index) => {
+        return index.toString();
+    });
 
-    const teamColors: {[key: string]: string} = {
-        'Red Bull Racing Honda RBPT': '#23326A',
-        'Ferrari': '#D40000',
-        'McLaren Mercedes': '#FF8000',
-        'Mercedes': '#04BFAD',
-        'Aston Martin Aramco Mercedes': '#00665E',
-        'RB Honda RBPT': '#041F3D',
-        'Haas Ferrari': '#111111',
-        'Alpine Renault': '#0078C1',
-        'Williams Mercedes': '#0331A0',
-        'Kick Sauber Ferrari': '#00e701'
-    };
+    const yearColors = [
+        '#FF0000', // Red 2018
+        '#00FF00', // Green 2019
+        '#0000FF', // Blue 2020
+        '#FFFF00', // Yellow 2021
+        '#FF00FF', // Magenta 2022
+        '#00FFFF', // Cyan 2023
+        '#800080'  // Lila 2024
+    ];
 
-    const datasets = team.races_by_year.map((team, teamIndex) => {
+    const datasets = Object.keys(team.races_by_year).map((year, index) => {
         let cumulativePoints = 0;
-        const data = team.races_by_year[2024].map(race => {
+        const data = team.races_by_year[Number(year)].map(race => {
             cumulativePoints += Number(race.points);
             return cumulativePoints;
         });
 
-        const teamColor = teamColors[team.name] || '#000000';
 
         return {
-            label: team.name,
+            label: year,
             data: data,
-            borderColor: teamColor,
-            backgroundColor: teamColor,
+            borderColor: yearColors[index],
+            backgroundColor: yearColors[index],
             fill: false,
         };
     });

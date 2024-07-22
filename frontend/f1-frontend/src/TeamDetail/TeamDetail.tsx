@@ -5,6 +5,7 @@ import { useState } from "react";
 import { RacesAPI } from "../api/api";
 import { useTeams } from "../TeamContext";
 import RaceChart from "../TeamStandings/RaceChart";
+import ChartTeam from "./ChartTeam"
 
 
 
@@ -31,6 +32,7 @@ function TeamDetail() {
     return (
         <div>
             <h1>{team.name}</h1>
+            <ChartTeam team={team}></ChartTeam>
         </div>
     )
     
