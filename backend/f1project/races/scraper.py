@@ -5,6 +5,9 @@ from .race import Race
 from .cache import team_cache, team_name_mapping
 
 def getTeamStanding():
+    if 'team_standing' in team_cache:
+        return team_cache['team_standing']
+    
     endpoint = 'https://www.formula1.com/en/results.html/2024/team.html'
     html = requests.get(endpoint)
     soup = BeautifulSoup(html.text, 'lxml')
