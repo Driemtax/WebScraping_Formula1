@@ -40,8 +40,11 @@ function convertToRaceModel(data : any) : Race {
 }
 
 function convertToTeamModel(data: any) : Team {
-    const races = data.races.map((raceData: any) => convertToRaceModel(raceData));
-    return new Team({...data, races});
+    const races_by_year: { [year: number]: Race[] } = {};
+    for (const year in data.races_by_year) {
+        races_by_year[Number(year)] = data.races_by_year[year].map((raceData: any) => convertToRaceModel(raceData))
+    }
+    return new Team({...data, races_by_year});
 }
 
 function convertToTeamList(data: any) : Team[] {

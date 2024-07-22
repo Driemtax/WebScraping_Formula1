@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from .team import Team
 from .race import Race
-from .cache import team_cache
+from .cache import team_cache, team_name_mapping
 
 def getTeamStanding():
     if 'team_standing' in team_cache:
@@ -26,12 +26,9 @@ def getTeamStanding():
     return teams
 
 def getStanding(team, year):
-    name_format = team.name.lower().replace(" ", "_")
+    name_format = team_name_mapping[team.name][year]
     print(name_format)
     endpoint = f'https://www.formula1.com/en/results.html/{year}/team/{name_format}.html'
-    real_endpoint = 'https://www.formula1.com/en/results.html/2024/team/red_bull_racing_honda_rbpt.html'
-    correctness = endpoint == real_endpoint
-    print(correctness)
     html = requests.get(endpoint)
     soup = BeautifulSoup(html.text, 'lxml')
 
@@ -45,6 +42,6 @@ def getStanding(team, year):
             points = columns[3].text.strip()
             race = Race(location, points)
             races.append(race)
-    team.races = races
+    team.add_races(year, races)
     
     return team
